@@ -3,4 +3,7 @@
     <string name="log_in">Login</string>
     <string name="hint_email">Email</string>
     <string name="hint_pwd">Password</string>
+    <string name="create_group_label">Create Group</string>
+    <string name="statistics_label">Statistics</string>
+    <string name="show_lessons_label">List Lessons</string>
 </resources>
