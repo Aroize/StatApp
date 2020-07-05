@@ -6,4 +6,5 @@
     <string name="create_group_label">Create Group</string>
     <string name="statistics_label">Statistics</string>
     <string name="show_lessons_label">List Lessons</string>
+    <string name="blank_group">"Group : "</string>
 </resources>

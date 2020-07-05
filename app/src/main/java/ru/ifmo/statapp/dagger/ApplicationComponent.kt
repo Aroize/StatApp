@@ -6,7 +6,7 @@ import ru.ifmo.statapp.presentation.fragment.GroupCreatorFragment
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [IteractorModule::class, DatabaseModule::class])
+@Component(modules = [IteractorModule::class, DatabaseModule::class, PresenterModule::class])
 interface ApplicationComponent {
     fun inject(activity: LoginActivity)
 
