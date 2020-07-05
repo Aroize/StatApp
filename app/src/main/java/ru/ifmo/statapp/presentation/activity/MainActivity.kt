@@ -1,5 +1,7 @@
 package ru.ifmo.statapp.presentation.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.ifmo.statapp.R
@@ -41,5 +43,9 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
                 .commitNow()
         else
             super.onBackPressed()
+    }
+
+    companion object {
+        fun createIntent(packageContext: Context) = Intent(packageContext, MainActivity::class.java)
     }
 }

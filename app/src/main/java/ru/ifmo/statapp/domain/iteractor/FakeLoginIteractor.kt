@@ -1,7 +1,7 @@
 package ru.ifmo.statapp.domain.iteractor
 
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.Completable
+import io.reactivex.Single
 import ru.ifmo.statapp.data.api.OAuthInfo
 import ru.ifmo.statapp.domain.api.LoginIteractor
 
