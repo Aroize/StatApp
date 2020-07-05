@@ -37,7 +37,7 @@ class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView {
     lateinit var presenterProvider: Provider<GroupsCreatorPresenter>
 
     @ProvidePresenter
-    fun providePresenter() = presenterProvider.get()
+    fun providePresenter(): GroupsCreatorPresenter = presenterProvider.get()
 
     private lateinit var createGroupBtn: Button
     private lateinit var groupList: RecyclerView
