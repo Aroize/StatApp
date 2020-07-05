@@ -32,4 +32,14 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
             .replace(R.id.fragment_container, fragment)
             .commitNow()
     }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (currentFragment !is PickerFragment)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, PickerFragment())
+                .commitNow()
+        else
+            super.onBackPressed()
+    }
 }
