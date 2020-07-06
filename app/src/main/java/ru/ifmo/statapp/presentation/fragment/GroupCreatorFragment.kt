@@ -1,30 +1,30 @@
 package ru.ifmo.statapp.presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.ifmo.statapp.App
 import ru.ifmo.statapp.R
 import ru.ifmo.statapp.data.db.entity.Group
-import ru.ifmo.statapp.domain.iteractor.GroupsIteractor
+import ru.ifmo.statapp.domain.MainStateAcceptor
+import ru.ifmo.statapp.presentation.activity.MainActivity
 import ru.ifmo.statapp.presentation.presenter.GroupsCreatorPresenter
 import ru.ifmo.statapp.presentation.view.GroupCreatorView
 import javax.inject.Inject
 import javax.inject.Provider
 
-class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView {
+class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView, View.OnClickListener {
 
     companion object {
         const val tag = "GroupsCreatorFragment"
@@ -65,6 +65,11 @@ class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView {
         createGroupBtn = mainView.findViewById(R.id.create_group_btn)
         groupList = mainView.findViewById(R.id.group_recycler)
         groupList.adapter = adapter
+        createGroupBtn.setOnClickListener(this)
+    }
+
+    private fun openGroup(group: Group) {
+        (activity as MainActivity).showGroup(group)
     }
 
     override fun showGroups(groups: List<Group>) {
@@ -76,7 +81,31 @@ class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView {
         Toast.makeText(activity, messageRes, Toast.LENGTH_LONG).show()
     }
 
+    override fun showErrorMessage(message: String?) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun addGroup(group: Group) {
+        adapter.groups += group
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onClick(v: View?) {
+        val groupName = EditText(activity)
+        AlertDialog.Builder(activity as Context)
+            .setView(groupName)
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                presenter.createGroup(groupName.text.toString())
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     inner class GroupsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        init {
+            itemView.setOnClickListener { openGroup(group) }
+        }
 
         private val groupName = itemView.findViewById<TextView>(R.id.group_name)
 

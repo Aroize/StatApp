@@ -7,4 +7,6 @@
     <string name="statistics_label">Statistics</string>
     <string name="show_lessons_label">List Lessons</string>
     <string name="blank_group">"Group : "</string>
+    <string name="blank_group_name">Group name can\'t be blank</string>
+    <string name="add_student_label">Add Student</string>
 </resources>

@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import ru.ifmo.statapp.R
+import ru.ifmo.statapp.data.db.entity.Group
 import ru.ifmo.statapp.domain.MainState
 import ru.ifmo.statapp.domain.MainStateAcceptor
 import ru.ifmo.statapp.presentation.fragment.GroupCreatorFragment
 import ru.ifmo.statapp.presentation.fragment.PickerFragment
+import ru.ifmo.statapp.presentation.fragment.StudentListFragment
 
 class MainActivity : AppCompatActivity(), MainStateAcceptor {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,7 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
     }
 
     override fun acceptState(state: MainState) {
-        val fragment = when (state) {
+        val fragment: Fragment = when (state) {
             MainState.PICKER -> { PickerFragment() }
             MainState.LIST_LESSONS -> { throw NotImplementedError("Stub") }
             MainState.CREATE_GROUP -> { GroupCreatorFragment() }
@@ -43,6 +46,17 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
                 .commitNow()
         else
             super.onBackPressed()
+    }
+
+    fun showGroup(group: Group) {
+        val fragment = StudentListFragment().apply {
+            arguments = Bundle().also {
+                    bundle ->  bundle.putLong(StudentListFragment.groupIdKey, group.id)
+            }
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commitNow()
     }
 
     companion object {

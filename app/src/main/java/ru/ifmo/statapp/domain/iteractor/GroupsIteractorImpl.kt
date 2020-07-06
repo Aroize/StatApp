@@ -9,27 +9,25 @@ import ru.ifmo.statapp.data.db.entity.Group
 import javax.inject.Inject
 
 class GroupsIteractorImpl
-    @Inject constructor(
-        private val localGroupsDao: GroupDao,
-        private val remoteGroupsDao: GroupDao
-    )
-    : GroupsIteractor {
+@Inject constructor(
+    private val localGroupsDao: GroupDao,
+    private val remoteGroupsDao: GroupDao
+) : GroupsIteractor {
     override fun groups(): Observable<List<Group>> = Observable.create { emitter ->
         localGroupsDao.groups()
             .subscribeOn(Schedulers.io())
-            .subscribe ({ localGroups ->
+            .subscribe({ localGroups ->
                 if (!emitter.isDisposed) {
                     Log.d(tag, "Local groups are ready")
                     emitter.onNext(localGroups)
-                }
-                else
+                } else
                     Log.d(tag, "Remote host was faster")
             }, { e ->
                 Log.d(tag, "Error while reading from local db, trying to use only remote", e)
             })
         remoteGroupsDao.groups()
             .subscribeOn(Schedulers.io())
-            .subscribe ({ remoteGroups ->
+            .subscribe({ remoteGroups ->
                 Log.d(tag, "Remote groups are ready")
                 emitter.onNext(remoteGroups)
                 emitter.onComplete()
@@ -40,16 +38,26 @@ class GroupsIteractorImpl
     }
 
     override fun insertGroup(group: Group): Completable {
-        group.id = System.currentTimeMillis()
-        return remoteGroupsDao.insert(group)
-            .andThen(localGroupsDao.insert(group))
+        return remoteGroupsDao
+            .insert(group)
             .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .andThen(
+                localGroupsDao
+                    .insert(group)
+                    .subscribeOn(Schedulers.io())
+            )
     }
 
     override fun deleteGroup(group: Group): Completable {
-        return remoteGroupsDao.delete(group)
-            .andThen(localGroupsDao.delete(group))
+        return remoteGroupsDao
+            .delete(group)
             .subscribeOn(Schedulers.io())
+            .andThen(
+                localGroupsDao
+                    .delete(group)
+                    .subscribeOn(Schedulers.io())
+            )
     }
 
     companion object {

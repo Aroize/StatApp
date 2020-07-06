@@ -10,4 +10,8 @@ interface GroupCreatorView : MvpView {
     fun showGroups(groups: List<Group>)
 
     fun showErrorMessage(messageRes: Int)
+
+    fun showErrorMessage(message: String?)
+
+    fun addGroup(group: Group)
 }
