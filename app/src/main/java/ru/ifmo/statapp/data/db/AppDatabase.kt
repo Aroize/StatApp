@@ -7,7 +7,7 @@ import ru.ifmo.statapp.data.db.dao.StudentDao
 import ru.ifmo.statapp.data.db.entity.Group
 import ru.ifmo.statapp.data.db.entity.Student
 
-@Database(entities = [Group::class, Student::class], version = 2)
+@Database(entities = [Group::class, Student::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
 

@@ -9,4 +9,7 @@
     <string name="blank_group">"Group : "</string>
     <string name="blank_group_name">Group name can\'t be blank</string>
     <string name="add_student_label">Add Student</string>
+    <string name="student_name">Name</string>
+    <string name="student_surname">Surname</string>
+    <string name="student_email">Email</string>
 </resources>

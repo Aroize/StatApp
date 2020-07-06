@@ -16,8 +16,12 @@ class GroupsCreatorPresenter @Inject constructor(private val groupsIteractor: Gr
 
     private val disposable = CompositeDisposable()
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
+    override fun detachView(view: GroupCreatorView?) {
+        super.detachView(view)
+        disposable.clear()
+    }
+
+    fun getGroups() {
         disposable.add(groupsIteractor.groups()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -32,11 +36,6 @@ class GroupsCreatorPresenter @Inject constructor(private val groupsIteractor: Gr
                     Log.d(GroupCreatorFragment.tag, "Remote are preprocessed")
                 })
         )
-    }
-
-    override fun detachView(view: GroupCreatorView?) {
-        super.detachView(view)
-        disposable.clear()
     }
 
     fun createGroup(groupName: String) {

@@ -49,6 +49,7 @@ class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView, View.OnCl
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        presenter.getGroups()
     }
 
     override fun onCreateView(
