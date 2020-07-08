@@ -19,4 +19,6 @@ interface ApplicationComponent {
     fun inject(fragment: CreateLessonFragment)
 
     fun inject(fragment: LessonInfoFragment)
+
+    fun inject(fragment: StatisticsFragment)
 }

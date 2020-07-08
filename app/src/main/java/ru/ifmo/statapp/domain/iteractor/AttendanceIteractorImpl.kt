@@ -48,4 +48,13 @@ class AttendanceIteractorImpl
                     .subscribeOn(Schedulers.io())
             )
     }
+
+    override fun attendanceByStudent(studentId: Long): Observable<List<Attendance>> {
+        return localDao.studentAttendance(studentId)
+            .subscribeOn(Schedulers.io())
+            .mergeWith(
+                remoteDao.studentAttendance(studentId)
+            )
+            .toObservable()
+    }
 }

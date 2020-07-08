@@ -9,6 +9,8 @@ interface AttendanceIteractor {
 
     fun attendanceByLesson(lessonId: Long): Observable<List<Attendance>>
 
+    fun attendanceByStudent(studentId: Long): Observable<List<Attendance>>
+
     fun insert(attendance: Attendance): Completable
 
     fun delete(attendance: Attendance): Completable

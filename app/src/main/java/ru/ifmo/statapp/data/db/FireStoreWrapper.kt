@@ -161,7 +161,7 @@ class FireStoreWrapper : GroupDao, StudentDao, LessonDao, AttendanceDao {
     }
 
     override fun studentAttendance(studentId: Long): Single<List<Attendance>> {
-        return whereQuery("attendance", "student_id", toString(), Attendance::class.java)
+        return whereQuery("attendance", "student_id", studentId, Attendance::class.java)
     }
 
     override fun lessonAttendance(lessonId: Long): Single<List<Attendance>> {

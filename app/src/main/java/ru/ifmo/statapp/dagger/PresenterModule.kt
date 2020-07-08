@@ -27,4 +27,10 @@ object PresenterModule {
         studentIteractor: StudentsIteractor,
         attendanceIteractor: AttendanceIteractor
     ) = LessonInfoPresenter(studentIteractor, attendanceIteractor)
+
+    @Provides
+    fun provideStatisticsPresenter(
+        studentIteractor: StudentsIteractor,
+        attendanceIteractor: AttendanceIteractor
+    ) = StatisticsPresenter(studentIteractor, attendanceIteractor)
 }

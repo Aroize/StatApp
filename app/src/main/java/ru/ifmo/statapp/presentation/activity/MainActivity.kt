@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
             MainState.PICKER -> { PickerFragment() }
             MainState.LIST_LESSONS -> { LessonsListFragment() }
             MainState.CREATE_GROUP -> { GroupCreatorFragment() }
-            MainState.STATISTICS -> { throw NotImplementedError("Stub") }
+            MainState.STATISTICS -> { StatisticsFragment() }
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)

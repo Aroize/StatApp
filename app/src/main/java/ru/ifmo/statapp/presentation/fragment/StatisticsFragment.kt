@@ -1,12 +1,9 @@
 package ru.ifmo.statapp.presentation.fragment
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -16,36 +13,33 @@ import moxy.presenter.ProvidePresenter
 import ru.ifmo.statapp.App
 import ru.ifmo.statapp.R
 import ru.ifmo.statapp.data.db.entity.Student
-import ru.ifmo.statapp.presentation.presenter.StudentListPresenter
-import ru.ifmo.statapp.presentation.view.StudentListView
+import ru.ifmo.statapp.presentation.presenter.StatisticsPresenter
+import ru.ifmo.statapp.presentation.view.StatisticsView
 import javax.inject.Inject
 import javax.inject.Provider
 
-class StudentListFragment : MvpAppCompatFragment(), StudentListView, View.OnClickListener {
-
-    private val adapter = StudentAdapter()
-
-    fun groupId() = arguments!!.getLong(groupIdKey)
+class StatisticsFragment : MvpAppCompatFragment(), StatisticsView {
 
     @InjectPresenter
-    lateinit var presenter: StudentListPresenter
+    lateinit var presenter: StatisticsPresenter
 
     @Inject
-    lateinit var presenterProvider: Provider<StudentListPresenter>
+    lateinit var presenterProvider: Provider<StatisticsPresenter>
 
     @ProvidePresenter
-    fun providePresenter(): StudentListPresenter = presenterProvider.get()
+    fun providePresenter(): StatisticsPresenter = presenterProvider.get()
+
+    private lateinit var mainView: View
+
+    private lateinit var studentRecyclerView: RecyclerView
+
+    private val adapter = StudentAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        presenter.getGroups(groupId())
+        presenter.getStudents()
     }
-
-    private lateinit var studentRecycler: RecyclerView
-    private lateinit var addStudentBtn: Button
-
-    private lateinit var mainView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,48 +52,30 @@ class StudentListFragment : MvpAppCompatFragment(), StudentListView, View.OnClic
     }
 
     private fun initViews() {
-        studentRecycler = mainView.findViewById(R.id.holder_list)
-        studentRecycler.adapter = adapter
-        addStudentBtn = mainView.findViewById(R.id.add_holder_btn)
-        addStudentBtn.text = getString(R.string.add_student_label)
-        addStudentBtn.setOnClickListener(this)
+        mainView.findViewById<View>(R.id.add_holder_btn).apply { visibility = View.GONE }
+        studentRecyclerView = mainView.findViewById(R.id.holder_list)
+        studentRecyclerView.adapter = adapter
     }
 
-    override fun showError(message: String?) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun showStudents(studentList: List<Student>) {
-        adapter.students = studentList
+    override fun showStudents(students: List<Student>) {
+        adapter.students = students
         adapter.notifyDataSetChanged()
     }
 
-    override fun addStudent(student: Student) {
-        adapter.students += student
-        adapter.notifyDataSetChanged()
-    }
-
-    @SuppressLint("InflateParams")
-    override fun onClick(v: View?) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_create_student, null)
-        AlertDialog.Builder(activity)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                val name = dialogView.findViewById<TextView>(R.id.student_field_name).text.toString()
-                val surname = dialogView.findViewById<TextView>(R.id.student_field_surname).text.toString()
-                val email = dialogView.findViewById<TextView>(R.id.student_field_email).text.toString()
-                presenter.insertStudent(name, surname, email, groupId())
-            }
-            .show()
-    }
-
-    companion object {
-        const val groupIdKey = "group.id"
+    override fun showStatistics(count: Int) {
+        val text = getString(R.string.attendance, count)
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show()
     }
 
     open inner class StudentVieHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private var student = Student()
+
+        init {
+            itemView.setOnClickListener {
+                presenter.getStudentAttendance(studentId = student.id)
+            }
+        }
 
         private val studentName = itemView.findViewById<TextView>(R.id.student_name)
 
