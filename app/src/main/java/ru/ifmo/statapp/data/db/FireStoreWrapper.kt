@@ -6,13 +6,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import io.reactivex.Completable
 import io.reactivex.Single
+import ru.ifmo.statapp.data.db.dao.AttendanceDao
 import ru.ifmo.statapp.data.db.dao.GroupDao
+import ru.ifmo.statapp.data.db.dao.LessonDao
 import ru.ifmo.statapp.data.db.dao.StudentDao
+import ru.ifmo.statapp.data.db.entity.Attendance
 import ru.ifmo.statapp.data.db.entity.Group
+import ru.ifmo.statapp.data.db.entity.Lesson
 import ru.ifmo.statapp.data.db.entity.Student
 import java.lang.RuntimeException
 
-class FireStoreWrapper : GroupDao, StudentDao {
+class FireStoreWrapper : GroupDao, StudentDao, LessonDao, AttendanceDao {
 
     private val firestore = FirebaseFirestore.getInstance()
 
@@ -130,6 +134,34 @@ class FireStoreWrapper : GroupDao, StudentDao {
 
     override fun studentsByGroup(groupId: Long): Single<List<Student>> {
         return whereQuery("students", "group_id", groupId, Student::class.java)
+    }
+
+    override fun lessons(): Single<List<Lesson>> {
+        return allQuery("lessons", Lesson::class.java)
+    }
+
+    override fun insert(lesson: Lesson): Completable {
+        return insert("lessons", lesson)
+    }
+
+    override fun delete(lesson: Lesson): Completable {
+        return delete("lessons", "lesson_id", lesson.id)
+    }
+
+    override fun allAttendance(): Single<List<Attendance>> {
+        return allQuery("attendance", Attendance::class.java)
+    }
+
+    override fun insert(attendance: Attendance): Completable {
+        return insert("attendance", attendance)
+    }
+
+    override fun delete(attendance: Attendance): Completable {
+        return delete("attendance", "attendance_id", attendance.id)
+    }
+
+    override fun studentAttendance(studentId: Long): Single<List<Attendance>> {
+        return whereQuery("attendance", "student_id", toString(), Attendance::class.java)
     }
 
     companion object {

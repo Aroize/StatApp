@@ -52,15 +52,16 @@ class StudentListFragment : MvpAppCompatFragment(), StudentListView, View.OnClic
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainView = inflater.inflate(R.layout.fragment_student_group_list, container, false)
+        mainView = inflater.inflate(R.layout.fragment_list, container, false)
         initViews()
         return mainView
     }
 
     private fun initViews() {
-        studentRecycler = mainView.findViewById(R.id.student_list)
+        studentRecycler = mainView.findViewById(R.id.holder_list)
         studentRecycler.adapter = adapter
-        addStudentBtn = mainView.findViewById(R.id.add_student_btn)
+        addStudentBtn = mainView.findViewById(R.id.add_holder_btn)
+        addStudentBtn.text = getString(R.string.add_student_label)
         addStudentBtn.setOnClickListener(this)
     }
 

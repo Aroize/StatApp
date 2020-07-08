@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import ru.ifmo.statapp.data.db.FireStoreWrapper
 import ru.ifmo.statapp.data.db.dao.GroupDao
+import ru.ifmo.statapp.data.db.dao.LessonDao
 import ru.ifmo.statapp.data.db.dao.StudentDao
 import ru.ifmo.statapp.domain.api.LoginIteractor
 import ru.ifmo.statapp.domain.iteractor.*
@@ -18,4 +19,7 @@ object IteractorModule {
 
     @Provides
     fun provideStudentIteractor(localDao: StudentDao, remoteDao: FireStoreWrapper): StudentsIteractor = StudentsIteractorImpl(localDao, remoteDao)
+
+    @Provides
+    fun provideLessonIteractor(localDao: LessonDao, remoteDao: FireStoreWrapper): LessonIteractor = LessonIteractorImpl(localDao, remoteDao)
 }

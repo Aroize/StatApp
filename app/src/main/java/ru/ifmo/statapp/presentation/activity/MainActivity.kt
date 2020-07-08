@@ -9,9 +9,7 @@ import ru.ifmo.statapp.R
 import ru.ifmo.statapp.data.db.entity.Group
 import ru.ifmo.statapp.domain.MainState
 import ru.ifmo.statapp.domain.MainStateAcceptor
-import ru.ifmo.statapp.presentation.fragment.GroupCreatorFragment
-import ru.ifmo.statapp.presentation.fragment.PickerFragment
-import ru.ifmo.statapp.presentation.fragment.StudentListFragment
+import ru.ifmo.statapp.presentation.fragment.*
 
 class MainActivity : AppCompatActivity(), MainStateAcceptor {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
     override fun acceptState(state: MainState) {
         val fragment: Fragment = when (state) {
             MainState.PICKER -> { PickerFragment() }
-            MainState.LIST_LESSONS -> { throw NotImplementedError("Stub") }
+            MainState.LIST_LESSONS -> { LessonsListFragment() }
             MainState.CREATE_GROUP -> { GroupCreatorFragment() }
             MainState.STATISTICS -> { throw NotImplementedError("Stub") }
         }
@@ -56,6 +54,12 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
+            .commitNow()
+    }
+
+    fun createLesson() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, CreateLessonFragment())
             .commitNow()
     }
 

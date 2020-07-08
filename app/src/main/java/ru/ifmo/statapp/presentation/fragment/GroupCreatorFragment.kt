@@ -57,14 +57,15 @@ class GroupCreatorFragment : MvpAppCompatFragment(), GroupCreatorView, View.OnCl
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainView = inflater.inflate(R.layout.fragment_group_creator, container, false)
+        mainView = inflater.inflate(R.layout.fragment_list, container, false)
         initViews()
         return mainView
     }
 
     private fun initViews() {
-        createGroupBtn = mainView.findViewById(R.id.create_group_btn)
-        groupList = mainView.findViewById(R.id.group_recycler)
+        createGroupBtn = mainView.findViewById(R.id.add_holder_btn)
+        createGroupBtn.text = getString(R.string.create_group_label)
+        groupList = mainView.findViewById(R.id.holder_list)
         groupList.adapter = adapter
         createGroupBtn.setOnClickListener(this)
     }

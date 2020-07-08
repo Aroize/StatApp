@@ -12,4 +12,8 @@
     <string name="student_name">Name</string>
     <string name="student_surname">Surname</string>
     <string name="student_email">Email</string>
+    <string name="lesson_theme">Theme</string>
+    <string name="lesson_time">Time</string>
+    <string name="zoom_link">Zoom Link</string>
+    <string name="add_lesson_label">Add Lesson</string>
 </resources>
