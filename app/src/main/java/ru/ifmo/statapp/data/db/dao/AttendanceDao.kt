@@ -17,6 +17,9 @@ interface AttendanceDao {
     @Query("SELECT * FROM attendance WHERE studentId = :studentId")
     fun studentAttendance(studentId: Long): Single<List<Attendance>>
 
+    @Query("SELECT * FROM attendance WHERE lessonId = :lessonId")
+    fun lessonAttendance(lessonId: Long): Single<List<Attendance>>
+
     @Insert
     fun insert(attendance: Attendance): Completable
 

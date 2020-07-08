@@ -164,6 +164,10 @@ class FireStoreWrapper : GroupDao, StudentDao, LessonDao, AttendanceDao {
         return whereQuery("attendance", "student_id", toString(), Attendance::class.java)
     }
 
+    override fun lessonAttendance(lessonId: Long): Single<List<Attendance>> {
+        return whereQuery("attendance", "lesson_id", lessonId, Attendance::class.java)
+    }
+
     companion object {
         const val tag = "FireStoreWrapper"
     }

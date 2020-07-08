@@ -65,6 +65,10 @@ class LessonsListFragment : MvpAppCompatFragment(), LessonListView, View.OnClick
         (activity as MainActivity).createLesson()
     }
 
+    fun showLesson(lesson: Lesson) {
+        (activity as MainActivity).showLesson(lesson)
+    }
+
     override fun showLessons(lessons: List<Lesson>) {
         adapter.lessons = lessons
         adapter.notifyDataSetChanged()
@@ -72,6 +76,11 @@ class LessonsListFragment : MvpAppCompatFragment(), LessonListView, View.OnClick
 
     inner class LessonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        init {
+            itemView.setOnClickListener {
+                showLesson(lesson)
+            }
+        }
 
         private val lessonTheme = itemView.findViewById<TextView>(R.id.lesson_theme)
         private val lessonZoomLink = itemView.findViewById<TextView>(R.id.zoom_link)

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.ifmo.statapp.R
 import ru.ifmo.statapp.data.db.entity.Group
+import ru.ifmo.statapp.data.db.entity.Lesson
 import ru.ifmo.statapp.domain.MainState
 import ru.ifmo.statapp.domain.MainStateAcceptor
 import ru.ifmo.statapp.presentation.fragment.*
@@ -60,6 +61,17 @@ class MainActivity : AppCompatActivity(), MainStateAcceptor {
     fun createLesson() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, CreateLessonFragment())
+            .commitNow()
+    }
+
+    fun showLesson(lesson: Lesson) {
+        val fragment = LessonInfoFragment().apply {
+            arguments = Bundle().also {
+                bundle -> bundle.putLong(LessonInfoFragment.lessonIdKey, lesson.id)
+            }
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
             .commitNow()
     }
 
